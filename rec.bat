@@ -1,11 +1,31 @@
 @echo off
 cd /d "%~dp0"
 cls
-title Rec script 3.0.2 VLC edition
+set pav=Rec script
+set ver=3.1.0
+title %pav% %ver% VLC edition
 color 17
+if not exist rec_dir.txt goto rec_dir_klaida
+set /p dir=<rec_dir.txt
+if "%dir%"=="" goto rec_dir_klaida
+goto tikrinam_vlc
+:rec_dir_klaida
+echo Nerastas/tuscias rec_dir.txt
+echo.
+echo Sukurkite rec_dir.txt faila tame paciame kataloge, kur laikote si scripta.
+echo I gauta tekstini faila iveskite irasymo direktorijos pilna kelia.
+echo Pvz.:
+echo C:\Katalogas\
+echo PASTABOS:
+echo #1. Galinis pasvires bruksnys butinas.
+echo #2. Pasvirimo kryptis svarbi, t.y. \ nelygus /
+goto isejimas_pause
+:tikrinam_vlc
 if exist vlc.exe goto pradzia
 echo Nerastas vlc.exe
-goto isejimas
+echo.
+echo Scriptas turi buti patalpintas kartu su vlc.exe
+goto isejimas_pause
 :pradzia
 if "%1"=="1" goto planinis
 if "%1"=="n" goto planinis
@@ -37,7 +57,7 @@ echo Jeigu nurodote keleta dienu, jas atskirkite kableliais (pvz.: MON,WED,FRI)
 set /p dienos=
 set nustatymai=/SC WEEKLY /D %dienos% /ST %laikas%
 :scheduleris
-schtasks /Create %nustatymai% /TN "Rec script (%failas%)" /TR "'%~0' %kartai% %uzmigdyti% %streamas% %failas% %pabaiga%">nul
+schtasks /Create %nustatymai% /TN "%pav% %ver% start (%failas%)" /TR "'%~0' %kartai% %uzmigdyti% %streamas% %failas% %pabaiga%">nul
 echo Irasymas prasides tavo nurodytu laiku. Sis langas tau nebereikalingas.
 goto isejimas
 :planinis
@@ -52,19 +72,26 @@ echo Streamo URL: %streamas%
 set failas=%4
 echo Failo pavadinimas: %DATE%_%failas%
 if "%2"=="1" set uzmigdymas=T
-if "%1"=="1" schtasks /Delete /TN "Rec script (%failas%)" /F>nul
+if "%1"=="1" schtasks /Delete /TN "%pav% %ver% start (%failas%)" /F>nul
 :irasymas
 echo.
-schtasks /Create /SC DAILY /ST %pabaiga% /TN "Rec script stop (%failas%)" /TR "taskkill /FI 'WINDOWTITLE eq vlc.exe  -I dummy %streamas%*' /T /F">nul
+schtasks /Create /SC DAILY /ST %pabaiga% /TN "%pav% %ver% stop (%failas%)" /TR "taskkill /FI 'WINDOWTITLE eq vlc.exe  -I dummy %streamas%*' /T /F">nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
 del "%appdata%\vlc\crashdump" /F 2>nul
-cmd /c vlc.exe -I dummy %streamas% --sout=file/ts:"D:\Recorder\%DATE%_%failas%"
-schtasks /Delete /TN "Rec script stop (%failas%)" /F>nul
+cmd /c vlc.exe -I dummy %streamas% --sout=file/ts:"%dir%%DATE%_%failas%"
+schtasks /Delete /TN "%pav% %ver% stop (%failas%)" /F>nul
 echo Irasymas baigtas.
 if /i not "%uzmigdymas%"=="T" goto isejimas
+echo.
 echo Vykdoma kompiuterio uzmigdymo komanda.
 rundll32 powrprof.dll,SetSuspendState
+:isejimas_pause
+echo.
+echo Spauskite bet kuri klavisa sio lango uzdarymui.
+pause>nul
+exit
 :isejimas
+echo.
 echo Sis langas automatiskai issijungs po 10 sekundziu.
 echo Jeigu nenorite laukti, galite ji isjungti tiesiog dabar.
 ping 127.0.0.1 -n 10>nul
