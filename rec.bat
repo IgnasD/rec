@@ -77,10 +77,18 @@ if "%2"=="1" set uzmigdymas=T
 if "%1"=="1" schtasks /Delete /TN "%pav% %ver% start (%failas%)" /F>nul
 :irasymas
 echo.
-schtasks /Create /SC DAILY /ST %pabaiga% /TN "%pav% %ver% stop (%failas%)" /TR "taskkill /FI 'WINDOWTITLE eq vlc.exe  -I dummy %streamas%*' /T /F">nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
 del "%appdata%\vlc\crashdump" /F /Q 2>nul
-cmd /c vlc.exe -I dummy %streamas% --demux=dump --demuxdump-file="%dir%%DATE%_%failas%"
+for /f "tokens=2 delims==; " %%p in (
+  'wmic process call create '"%~dp0vlc.exe" -I dummy %streamas% --demux=dump --demuxdump-file="%dir%%DATE%_%failas%"' 2^>nul ^| find "ProcessId"'
+) do set vlc_pid=%%p
+schtasks /Create /SC DAILY /ST %pabaiga% /TN "%pav% %ver% stop (%failas%)" /TR "taskkill /PID %vlc_pid% /T /F">nul
+:laukti_vlc
+tasklist /FI "PID eq %vlc_pid%" | find "%vlc_pid%" >nul
+if not errorlevel 1 (
+  ping 127.0.0.1 -n 3 >nul
+  goto laukti_vlc
+)
 schtasks /Delete /TN "%pav% %ver% stop (%failas%)" /F>nul
 echo Irasymas baigtas.
 if /i not "%uzmigdymas%"=="T" goto isejimas
