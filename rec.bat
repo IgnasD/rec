@@ -1,7 +1,7 @@
 @echo off
 cd /d "%~dp0"
 cls
-title Rec script 3.0.1 VLC edition
+title Rec script 3.0.2 VLC edition
 color 17
 if exist vlc.exe goto pradzia
 echo Nerastas vlc.exe
@@ -57,7 +57,7 @@ if "%1"=="1" schtasks /Delete /TN "Rec script (%failas%)" /F>nul
 echo.
 schtasks /Create /SC DAILY /ST %pabaiga% /TN "Rec script stop (%failas%)" /TR "taskkill /FI 'WINDOWTITLE eq vlc.exe  -I dummy %streamas%*' /T /F">nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
-del %appdata%\vlc\crashdump /F>nul
+del "%appdata%\vlc\crashdump" /F 2>nul
 cmd /c vlc.exe -I dummy %streamas% --sout=file/ts:"D:\Recorder\%DATE%_%failas%"
 schtasks /Delete /TN "Rec script stop (%failas%)" /F>nul
 echo Irasymas baigtas.
