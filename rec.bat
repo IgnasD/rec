@@ -30,7 +30,7 @@ goto isejimas_pause
 if "%1"=="1" goto planinis
 if "%1"=="n" goto planinis
 set /p streamas=Pilnas streamo URL (pvz. udp://@225.2.2.1:1234): 
-set /p failas=Failo pavadinimas (su galune, negali buti tarpu): 
+set /p failas=Failo pavadinimas (su galune): 
 set /p pradeti=Pradeti dabar? [T/N]: 
 if /i "%pradeti%"=="T" goto pradeti_dabar
 set /p laikas=Nurodykite irasymo pradzios laika (formatas: HH:MM:SS): 
