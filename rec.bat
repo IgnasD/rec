@@ -2,7 +2,7 @@
 cd /d "%~dp0"
 cls
 set pav=Rec script
-set ver=3.1.2
+set ver=3.1.3
 title %pav% %ver% VLC edition
 color 17
 if not exist rec_dir.txt goto rec_dir_klaida
@@ -31,12 +31,14 @@ if "%1"=="1" goto planinis
 if "%1"=="n" goto planinis
 set /p streamas=Pilnas streamo URL (pvz. udp://@225.2.2.1:1234): 
 set /p failas=Failo pavadinimas (su galune, negali buti tarpu): 
+set /p pradeti=Pradeti dabar? [T/N]: 
+if /i "%pradeti%"=="T" goto pradeti_dabar
+set /p laikas=Nurodykite irasymo pradzios laika (formatas: HH:MM:SS): 
+:pradeti_dabar
 set /p pabaiga=Nurodykite irasymo pabaigos laika (formatas: HH:MM:SS): 
 set /p uzmigdymas=Uzmigdyti kompiuteri po irasymo? [T/N]: 
-set /p pradeti=Pradeti dabar? [T/N]: 
 if /i "%pradeti%"=="T" goto irasymas
 if /i "%uzmigdymas%"=="T" (set uzmigdyti=1) else (set uzmigdyti=0)
-set /p laikas=Nurodykite irasymo pradzios laika (formatas: HH:MM:SS): 
 set /p daugkartinis=Daugkartinis irasymas? [T/N]: 
 if /i "%daugkartinis%"=="T" goto daugkartinis
 set kartai=1
