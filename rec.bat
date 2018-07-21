@@ -2,7 +2,7 @@
 cd /d "%~dp0"
 cls
 set pav=Rec script
-set ver=3.1.3
+set ver=3.1.4
 title %pav% %ver% VLC edition
 color 17
 if not exist rec_dir.txt goto rec_dir_klaida
@@ -87,6 +87,7 @@ if /i not "%uzmigdymas%"=="T" goto isejimas
 echo.
 echo Vykdoma kompiuterio uzmigdymo komanda.
 rundll32 powrprof.dll,SetSuspendState
+goto isejimas
 :isejimas_pause
 echo.
 echo Spauskite bet kuri klavisa sio lango uzdarymui.
