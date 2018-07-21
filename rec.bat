@@ -1,7 +1,7 @@
 @echo off
 cd /d %~dps0
 cls
-title FripTV 0.18 rec script v2.1-alpha
+title FripTV 0.18 rec script v2.1.1-alpha
 color 17
 if exist friptv.exe goto pradzia
 echo Nerastas friptv.exe
@@ -54,6 +54,7 @@ if /i not "%uzmigdymas%"=="T" goto isejimas
 echo Vykdoma kompiuterio uzmigdymo komanda.
 rundll32 powrprof.dll,SetSuspendState
 :isejimas
-echo Spauskite betkoki klavisa, kad iseitumete.
-pause>nul
+echo Sis langas automatiskai issijungs po 10 sekundziu.
+echo Jeigu nenorite laukti, galite ji isjungti tiesiog dabar.
+ping 127.0.0.1 -n 10 > nul
 exit
