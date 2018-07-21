@@ -1,7 +1,7 @@
 @echo off
-cd /d %~dps0
+cd /d "%~dp0"
 cls
-title FripTV 0.18 rec script 2.3 (stable?)
+title FripTV 0.18 rec script 2.3.1-final
 color 17
 if exist friptv.exe goto pradzia
 echo Nerastas friptv.exe
@@ -37,7 +37,7 @@ echo Jeigu nurodote keleta dienu, jas atskirkite kableliais (pvz.: MON,WED,FRI)
 set /p dienos=
 set nustatymai=/SC WEEKLY /D %dienos% /ST %laikas%
 :scheduleris
-schtasks /Create %nustatymai% /TN "FripTV rec (%failas%)" /TR "%~s0 %kartai% %uzmigdyti% %kanalas% %failas% %pabaiga%" > nul
+schtasks /Create %nustatymai% /TN "FripTV rec (%failas%)" /TR "'%~0' %kartai% %uzmigdyti% %kanalas% %failas% %pabaiga%">nul
 echo Irasymas prasides tavo nurodytu laiku. Sis langas tau nebereikalingas.
 goto isejimas
 :planinis
@@ -51,12 +51,12 @@ set failas=%4
 echo Failo pavadinimas (su galune): %failas%
 set pabaiga=%5
 if "%2"=="1" set uzmigdymas=T
-if "%1"=="1" schtasks /Delete /TN "FripTV rec (%failas%)" /F > nul
+if "%1"=="1" schtasks /Delete /TN "FripTV rec (%failas%)" /F>nul
 :irasymas
-schtasks /Create /SC DAILY /ST %pabaiga% /TN "FripTV rec stop (%failas%)" /TR "taskkill /IM friptv.exe /T /F" > nul
+schtasks /Create /SC DAILY /ST %pabaiga% /TN "FripTV rec stop (%failas%)" /TR "taskkill /IM friptv.exe /T /F">nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
 friptv.exe /silent /ch=%kanalas% /file=%failas%
-schtasks /Delete /TN "FripTV rec stop (%failas%)" /F > nul
+schtasks /Delete /TN "FripTV rec stop (%failas%)" /F>nul
 echo Irasymas baigtas.
 if /i not "%uzmigdymas%"=="T" goto isejimas
 echo Vykdoma kompiuterio uzmigdymo komanda.
@@ -64,5 +64,5 @@ rundll32 powrprof.dll,SetSuspendState
 :isejimas
 echo Sis langas automatiskai issijungs po 10 sekundziu.
 echo Jeigu nenorite laukti, galite ji isjungti tiesiog dabar.
-ping 127.0.0.1 -n 10 > nul
+ping 127.0.0.1 -n 10>nul
 exit
