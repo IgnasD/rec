@@ -79,7 +79,7 @@ if "%1"=="1" schtasks /Delete /TN "%pav% %ver% start (%failas%)" /F>nul
 echo.
 schtasks /Create /SC DAILY /ST %pabaiga% /TN "%pav% %ver% stop (%failas%)" /TR "taskkill /FI 'WINDOWTITLE eq vlc.exe  -I dummy %streamas%*' /T /F">nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
-del "%appdata%\vlc\crashdump" /F 2>nul
+del "%appdata%\vlc\crashdump" /F /Q 2>nul
 cmd /c vlc.exe -I dummy %streamas% --demux=dump --demuxdump-file="%dir%%DATE%_%failas%"
 schtasks /Delete /TN "%pav% %ver% stop (%failas%)" /F>nul
 echo Irasymas baigtas.
