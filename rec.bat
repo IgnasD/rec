@@ -86,7 +86,7 @@ schtasks /Create /SC DAILY /ST %pabaiga% /TN "%pav% %ver% stop (%failas%)" /TR "
 :laukti_vlc
 tasklist /FI "PID eq %vlc_pid%" | find "%vlc_pid%" >nul
 if not errorlevel 1 (
-  ping 127.0.0.1 -n 3 >nul
+  timeout /T 1 /NOBREAK >nul
   goto laukti_vlc
 )
 schtasks /Delete /TN "%pav% %ver% stop (%failas%)" /F>nul
@@ -105,5 +105,5 @@ exit
 echo.
 echo Sis langas automatiskai issijungs po 10 sekundziu.
 echo Jeigu nenorite laukti, galite ji isjungti tiesiog dabar.
-ping 127.0.0.1 -n 10>nul
+timeout /T 10 /NOBREAK >nul
 exit
