@@ -2,7 +2,7 @@
 cd /d "%~dp0"
 cls
 set pav=Rec script
-set ver=3.1.1
+set ver=3.1.2
 title %pav% %ver% VLC edition
 color 17
 if not exist rec_dir.txt goto rec_dir_klaida
@@ -78,7 +78,7 @@ echo.
 schtasks /Create /SC DAILY /ST %pabaiga% /TN "%pav% %ver% stop (%failas%)" /TR "taskkill /FI 'WINDOWTITLE eq vlc.exe  -I dummy %streamas%*' /T /F">nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
 del "%appdata%\vlc\crashdump" /F 2>nul
-cmd /c vlc.exe -I dummy %streamas% --sout=file/ts:"%dir%%DATE%_%failas%" --sout-all
+cmd /c vlc.exe -I dummy %streamas% --demux=dump --demuxdump-file="%dir%%DATE%_%failas%"
 schtasks /Delete /TN "%pav% %ver% stop (%failas%)" /F>nul
 echo Irasymas baigtas.
 if /i not "%uzmigdymas%"=="T" goto isejimas
