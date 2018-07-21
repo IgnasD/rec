@@ -1,7 +1,7 @@
 @echo off
 cd /d %~dps0
 cls
-title FripTV 0.18 rec script v2.2-alpha
+title FripTV 0.18 rec script v2.2.1-alpha
 color 17
 if exist friptv.exe goto pradzia
 echo Nerastas friptv.exe
@@ -46,7 +46,7 @@ echo Failo pavadinimas (su galune): %failas%
 set pabaiga=%5
 if "%2"=="1" set uzmigdymas=T
 :irasymas
-at %pabaiga% "taskkill /IM friptv.exe /T" > nul
+schtasks /Create /SC ONCE /ST %pabaiga% /TN "FripTV rec stop (%failas%)" /TR "taskkill /IM friptv.exe /T" > nul
 echo Pradedamas irasymas. Sekanti zinute pranes apie irasymo pabaiga.
 friptv.exe /silent /ch=%kanalas% /file=%failas%
 echo Irasymas baigtas.
