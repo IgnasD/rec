@@ -2,7 +2,7 @@
 cd /d "%~dp0"
 cls
 set pav=Rec script
-set ver=3.1.4
+set ver=3.2.0
 title %pav% %ver% VLC edition
 color 17
 if not exist rec_dir.txt goto rec_dir_klaida
